@@ -3,7 +3,7 @@ import {FC} from 'react';
 import Svg, {Path} from 'react-native-svg';
 
 interface ILockIconProps {
-  fill: string;
+  fill?: string;
 }
 
 const LockIcon: FC<ILockIconProps> = ({fill, ...props}) => {

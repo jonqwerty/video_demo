@@ -4,7 +4,7 @@ export const Colors = {
   lime: '#BDFF31',
   yellow: '#F8A121',
   pink: '#fc97e6',
-  blue: '#dee2fc',
+  blue: '#00BFE5',
   violet: '#A126E6',
   white: '#fff',
   white_200: '#F5F5F5',
@@ -12,6 +12,7 @@ export const Colors = {
   black_70: '#00000070',
   red: '#F00',
   grey: '#C4C8CC',
+  grey_60: '#C4C8CC60',
   grey_200: '#858590',
   black_basic: '#0F0F0F',
 };
