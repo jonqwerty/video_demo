@@ -1,7 +1,7 @@
 import {ImageBackground, StyleSheet, Text, View} from 'react-native';
 import React, {FC} from 'react';
 
-import {Colors, FontFamily, screen_width} from '../common/style';
+import {Colors, FontFamily, ScreenWidth} from '../common/style';
 import {IMovieItem} from '../store/app/appReducer';
 
 interface IMovieCardBigListItemProps {
@@ -29,7 +29,7 @@ export default MovieCardBigListItem;
 
 const styles = StyleSheet.create({
   bg: {
-    width: screen_width - 15 - 12 - 30,
+    width: ScreenWidth - 15 - 12 - 30,
     height: 200,
     borderRadius: 10,
     padding: 16,

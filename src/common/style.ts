@@ -29,8 +29,8 @@ export const FontFamily = {
 export const screen = Dimensions.get('screen');
 export const window = Dimensions.get('window');
 
-export const screen_width = screen.width;
-export const screen_height = screen.height;
+export const ScreenWidth = screen.width;
+export const ScreenHeight = screen.height;
 
-export const window_width = window.width;
-export const window_height = window.height;
+export const WindowWidth = window.width;
+export const WindowHeight = window.height;

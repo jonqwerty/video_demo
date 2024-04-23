@@ -29,8 +29,11 @@ const styles = StyleSheet.create({
     marginRight: 15,
     marginBottom: 20,
   },
+
   marginLeft: {marginLeft: 20},
+
   row: {flexDirection: 'row', alignItems: 'center'},
+
   text: {
     fontFamily: FontFamily.nunitoSans_bold,
     fontSize: 20,

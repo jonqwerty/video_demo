@@ -15,7 +15,6 @@ import Header from '../components/Header';
 import MovieCardSmallListItem from '../components/MovieCardSmallListItem';
 
 const HomeScreen: FC = () => {
-  console.log('first', data);
   return (
     <>
       <StatusBar

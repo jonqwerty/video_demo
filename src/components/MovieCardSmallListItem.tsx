@@ -1,7 +1,7 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
 import React, {FC} from 'react';
 
-import {Colors, FontFamily, screen_width} from '../common/style';
+import {Colors, FontFamily, ScreenWidth} from '../common/style';
 import {IMovieItem} from '../store/app/appReducer';
 import LockIcon from '../icons/LockIcon';
 
@@ -35,7 +35,7 @@ const MovieCardSmallListItem: FC<IMovieCardSmallListItemProps> = ({item}) => {
 export default MovieCardSmallListItem;
 
 const styles = StyleSheet.create({
-  container: {width: screen_width / 3},
+  container: {width: ScreenWidth / 3},
 
   bg: {
     height: 200,
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: Colors.grey_60,
     position: 'absolute',
-    left: screen_width / 3 / 2 - 25,
+    left: ScreenWidth / 3 / 2 - 25,
     top: 200 / 2 - 25,
   },
 });
