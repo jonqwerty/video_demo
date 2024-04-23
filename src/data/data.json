@@ -1,5 +1,5 @@
 {
-  "sectionOrder": ["genre", "trendingNow", "top"],
+  "sectionOrder": ["trendingNow", "genre", "top"],
   "movies": [
     {
       "id": 1,
