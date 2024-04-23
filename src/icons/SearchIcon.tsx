@@ -3,7 +3,7 @@ import {FC} from 'react';
 import Svg, {Rect, Circle, Path} from 'react-native-svg';
 
 interface ISearchIconProps {
-  fill: string;
+  fill?: string;
 }
 
 const SearchIcon: FC<ISearchIconProps> = ({fill, ...props}) => {
