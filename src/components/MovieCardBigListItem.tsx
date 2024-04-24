@@ -1,27 +1,38 @@
-import {ImageBackground, StyleSheet, Text, View} from 'react-native';
+import {ImageBackground, Pressable, StyleSheet, Text, View} from 'react-native';
 import React, {FC} from 'react';
+import {StackNavigationProp} from '@react-navigation/stack';
 
 import {Colors, FontFamily, ScreenWidth} from '../common/style';
 import {IMovieItem} from '../store/app/appReducer';
+import {useNavigation} from '@react-navigation/native';
+import {RootStackParamList, Screen} from '../common/enums';
 
 interface IMovieCardBigListItemProps {
   item: IMovieItem;
 }
 
 const MovieCardBigListItem: FC<IMovieCardBigListItemProps> = ({item}) => {
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+
+  const handlePress = () => {
+    navigation.navigate(Screen.Movie, {item: item});
+  };
+
   return (
-    <ImageBackground
-      style={styles.bg}
-      source={{uri: item.posterUrl}}
-      resizeMode="cover">
-      <View style={styles.genreBox}>
-        <Text style={styles.genre}>{item.genres}</Text>
-      </View>
-      <View style={styles.wrapper}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.director}>{item.director}</Text>
-      </View>
-    </ImageBackground>
+    <Pressable onPress={handlePress}>
+      <ImageBackground
+        style={styles.bg}
+        source={{uri: item.posterUrl}}
+        resizeMode="cover">
+        <View style={styles.genreBox}>
+          <Text style={styles.genre}>{item.genres}</Text>
+        </View>
+        <View style={styles.wrapper}>
+          <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.director}>{item.director}</Text>
+        </View>
+      </ImageBackground>
+    </Pressable>
   );
 };
 

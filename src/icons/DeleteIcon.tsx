@@ -3,7 +3,7 @@ import {FC} from 'react';
 import Svg, {Rect, Circle, Path} from 'react-native-svg';
 
 interface IDeleteIconProps {
-  fill: string;
+  fill?: string;
 }
 
 const DeleteIcon: FC<IDeleteIconProps> = ({fill, ...props}) => {

@@ -11,17 +11,17 @@ const Routes = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen
+        name="Movie"
+        component={MovieScreen}
+        options={{gestureEnabled: false, animation: 'none'}}
+      />
+      <Stack.Screen
         name="Home"
         component={HomeScreen}
         options={{
           gestureEnabled: false,
           animation: 'none',
         }}
-      />
-      <Stack.Screen
-        name="Movie"
-        component={MovieScreen}
-        options={{gestureEnabled: false, animation: 'none'}}
       />
     </Stack.Navigator>
   );

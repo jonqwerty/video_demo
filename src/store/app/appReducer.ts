@@ -15,6 +15,7 @@ export interface IMovieItem {
   actors: string;
   plot: string;
   posterUrl: string;
+  episodes: string[];
 }
 
 export interface IApp {

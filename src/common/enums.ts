@@ -1,4 +1,5 @@
 import {RouteProp} from '@react-navigation/native';
+import {IMovieItem} from '../store/app/appReducer';
 
 export enum LoadingStatus {
   IDLE = 'idle',
@@ -14,7 +15,7 @@ export enum Screen {
 
 export type RootStackParamList = {
   Home: {};
-  Movie: {};
+  Movie: {item: IMovieItem};
 };
 
 export type RootRouteProps<RouteName extends keyof RootStackParamList> =
