@@ -1,5 +1,5 @@
 import {Pressable, StyleSheet, Text, View} from 'react-native';
-import React, {forwardRef, Ref} from 'react';
+import React, {forwardRef} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import Slider from '@react-native-community/slider';
 import {OnProgressData} from 'react-native-video';
@@ -8,12 +8,13 @@ import {Colors, FontFamily} from '../common/style';
 import PlayIcon from '../icons/PlayIcon';
 import PauseIcon from '../icons/PauseIcon';
 import {formatTime} from '../utils/helpers';
-import {VideoRefType} from './EpisodeItem';
 
 interface IBottomPlalerNavbarProps {
   paused: boolean;
   setPaused: (arg0: boolean) => void;
   progress: null | OnProgressData;
+  currentTime: null | number;
+  duration: null | number;
 }
 
 interface IPlayerRef {
@@ -22,7 +23,7 @@ interface IPlayerRef {
 
 const BottomPlalerNavbar = forwardRef<IPlayerRef, IBottomPlalerNavbarProps>(
   (props, ref) => {
-    const {paused, setPaused, progress} = props;
+    const {paused, setPaused, progress, currentTime, duration} = props;
     return (
       <LinearGradient
         colors={['transparent', Colors.black_basic]}
@@ -64,10 +65,14 @@ const BottomPlalerNavbar = forwardRef<IPlayerRef, IBottomPlalerNavbarProps>(
                 paddingHorizontal: 15,
               }}>
               <Text style={styles.textTime}>
-                {formatTime(progress?.currentTime)}
+                {progress === null
+                  ? formatTime(currentTime)
+                  : formatTime(progress?.currentTime)}
               </Text>
               <Text style={styles.textTime}>
-                {formatTime(progress?.seekableDuration)}
+                {progress === null
+                  ? formatTime(duration)
+                  : formatTime(progress?.seekableDuration)}
               </Text>
             </View>
           </View>

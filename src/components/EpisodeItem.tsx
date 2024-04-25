@@ -1,10 +1,12 @@
-import {StyleSheet, View} from 'react-native';
+import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
 import React, {FC, useRef, useState} from 'react';
 import Video, {OnProgressData} from 'react-native-video';
 
 import {IEpisodeItem} from '../store/app/appReducer';
 import TopPlayerNavbar from './TopPlayerNavbar';
 import BottomPlalerNavbar from './BottomPlalerNavbar';
+import {ScreenHeight, ScreenWidth} from '../common/style';
+import Loader from './Loader';
 
 export type VideoRefType = React.RefObject<Video>;
 
@@ -15,10 +17,14 @@ interface IEpisodeItemProps {
 const EpisodeItem: FC<IEpisodeItemProps> = ({episode}) => {
   const [paused, setPaused] = useState(true);
   const [progress, setProgress] = useState<null | OnProgressData>(null);
+  const [currentTime, setCurrentTime] = useState<number | null>(null);
+  const [duration, setDuration] = useState<number | null>(null);
+  const [loadong, setLoading] = useState<boolean>(false);
   const ref: VideoRefType = useRef<Video>(null);
 
   return (
     <View style={{flex: 1}}>
+      {loadong ? <Loader /> : null}
       <View style={styles.backgroundVideo}>
         <TopPlayerNavbar title={episode.title} />
         <Video
@@ -30,9 +36,15 @@ const EpisodeItem: FC<IEpisodeItemProps> = ({episode}) => {
           onProgress={x => {
             setProgress(x);
           }}
+          onLoadStart={() => setLoading(true)}
+          onLoad={data => {
+            setDuration(data?.duration);
+            setCurrentTime(data?.currentTime);
+            setLoading(false);
+          }}
           // onBuffer={onBuffer} // Callback when remote video is buffering
           // onError={videoError} // Callback when video cannot be loaded
-          muted
+          muted={false}
           style={styles.backgroundVideo}
           resizeMode="contain"
         />
@@ -41,6 +53,8 @@ const EpisodeItem: FC<IEpisodeItemProps> = ({episode}) => {
           setPaused={setPaused}
           progress={progress}
           ref={ref}
+          currentTime={currentTime}
+          duration={duration}
         />
       </View>
     </View>
