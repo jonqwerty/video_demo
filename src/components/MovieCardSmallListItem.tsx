@@ -1,17 +1,28 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import React, {FC} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
 
 import {Colors, FontFamily, ScreenWidth} from '../common/style';
 import {IMovieItem} from '../store/app/appReducer';
 import LockIcon from '../icons/LockIcon';
+import {RootStackParamList, Screen} from '../common/enums';
 
 interface IMovieCardSmallListItemProps {
   item: IMovieItem;
 }
 
 const MovieCardSmallListItem: FC<IMovieCardSmallListItemProps> = ({item}) => {
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+
+  const handlePress = () => {
+    if (item.coming === null) {
+      navigation.navigate(Screen.Movie, {item: item});
+    }
+  };
+
   return (
-    <View style={styles.container}>
+    <Pressable style={styles.container} onPress={handlePress}>
       <Image
         style={styles.bg}
         source={{uri: item.posterUrl}}
@@ -28,7 +39,7 @@ const MovieCardSmallListItem: FC<IMovieCardSmallListItemProps> = ({item}) => {
         <Text style={styles.comingSoon}>coming {item.coming}</Text>
       ) : null}
       <Text style={styles.title}>{item.title}</Text>
-    </View>
+    </Pressable>
   );
 };
 

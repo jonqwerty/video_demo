@@ -7,6 +7,7 @@ import {Colors} from '../common/style';
 import Header from '../components/Header';
 import ListOfSmallCards from '../components/ListOfSmallCards';
 import ListOfBigCards from '../components/ListOfBigCards';
+import ListOfContinueWatching from '../components/ListOfContinueWatching';
 
 const HomeScreen: FC = () => {
   const order = data.sectionOrder;
@@ -45,6 +46,15 @@ const HomeScreen: FC = () => {
                     <ListOfSmallCards
                       data={data.movies.filter(item => item.top)}
                       title={'Top Romance'}
+                    />
+                  </View>
+                );
+              case 'continueWatching':
+                return (
+                  <View key={index}>
+                    <ListOfContinueWatching
+                      data={data.movies.filter(item => item.trendingNow)}
+                      title={'Continue Watching'}
                     />
                   </View>
                 );
