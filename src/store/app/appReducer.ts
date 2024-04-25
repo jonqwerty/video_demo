@@ -2,6 +2,12 @@ import {createReducer, isAnyOf, SerializedError} from '@reduxjs/toolkit';
 
 import {LoadingStatus} from '../../common/enums';
 
+export interface IEpisodeItem {
+  id: number;
+  title: string;
+  videoURI: string;
+}
+
 export interface IMovieItem {
   id: number;
   trendingNow: boolean;
@@ -15,7 +21,7 @@ export interface IMovieItem {
   actors: string;
   plot: string;
   posterUrl: string;
-  episodes: string[];
+  episodes: IEpisodeItem[];
 }
 
 export interface IApp {
