@@ -1,5 +1,7 @@
 import {ScrollView, StatusBar, StyleSheet, View} from 'react-native';
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useFocusEffect} from '@react-navigation/native';
 
 import * as data from '../data/data.json';
 
@@ -11,6 +13,20 @@ import ListOfContinueWatching from '../components/ListOfContinueWatching';
 
 const HomeScreen: FC = () => {
   const order = data.sectionOrder;
+
+  const [watched, setWatched] = useState<number[] | null>(null);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      (async () => {
+        const arr = await AsyncStorage.getItem('key');
+        if (arr) {
+          setWatched(JSON.parse(arr));
+        }
+      })();
+    }, []),
+  );
+
   return (
     <>
       <StatusBar
@@ -53,7 +69,7 @@ const HomeScreen: FC = () => {
                 return (
                   <View key={index}>
                     <ListOfContinueWatching
-                      data={data.movies.filter(item => item.trendingNow)}
+                      data={data.movies.filter(({id}) => watched?.includes(id))}
                       title={'Continue Watching'}
                     />
                   </View>
