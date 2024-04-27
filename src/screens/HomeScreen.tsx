@@ -1,8 +1,7 @@
 import {ScrollView, StatusBar, StyleSheet, View} from 'react-native';
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useFocusEffect} from '@react-navigation/native';
-import remoteConfig from '@react-native-firebase/remote-config';
 
 import {Colors} from '../common/style';
 import Header from '../components/Header';
@@ -10,24 +9,9 @@ import ListOfSmallCards from '../components/ListOfSmallCards';
 import ListOfBigCards from '../components/ListOfBigCards';
 import ListOfContinueWatching from '../components/ListOfContinueWatching';
 import {useAppStore} from '../store/store';
-import {IData} from '../types/types';
 
 const HomeScreen: FC = () => {
   const data = useAppStore(state => state.data);
-  const setData = useAppStore(state => state.setData);
-
-  useEffect(() => {
-    // remoteConfig().fetch(300);
-    remoteConfig()
-      .setDefaults({
-        data_movie: 'disabled',
-      })
-      .then(() => remoteConfig().fetchAndActivate())
-      .then(() => {
-        const res = remoteConfig().getValue('data_movie');
-        setData(JSON.parse(res?._value) as IData);
-      });
-  }, []);
 
   const order = data?.sectionOrder;
   console.log(order);
