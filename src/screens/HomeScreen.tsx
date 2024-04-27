@@ -1,7 +1,5 @@
 import {ScrollView, StatusBar, StyleSheet, View} from 'react-native';
-import React, {FC, useState} from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useFocusEffect} from '@react-navigation/native';
+import React, {FC} from 'react';
 
 import {Colors} from '../common/style';
 import Header from '../components/Header';
@@ -12,22 +10,11 @@ import {useAppStore} from '../store/store';
 
 const HomeScreen: FC = () => {
   const data = useAppStore(state => state.data);
+  const continueWatching = useAppStore(state => state.continueWatching);
+  console.log(continueWatching);
 
   const order = data?.sectionOrder;
   console.log(order);
-
-  const [watched, setWatched] = useState<number[] | null>(null);
-
-  useFocusEffect(
-    React.useCallback(() => {
-      (async () => {
-        const arr = await AsyncStorage.getItem('key');
-        if (arr) {
-          setWatched(JSON.parse(arr));
-        }
-      })();
-    }, []),
-  );
 
   return (
     <>
@@ -72,7 +59,7 @@ const HomeScreen: FC = () => {
                   <View key={index}>
                     <ListOfContinueWatching
                       data={data?.movies.filter(({id}) =>
-                        watched?.includes(id),
+                        continueWatching?.includes(id),
                       )}
                       title={'Continue Watching'}
                     />

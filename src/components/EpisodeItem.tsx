@@ -45,7 +45,7 @@ const EpisodeItem: FC<IEpisodeItemProps> = ({episode}) => {
           // onError={videoError} // Callback when video cannot be loaded
           muted={false}
           style={styles.backgroundVideo}
-          resizeMode="contain"
+          resizeMode='cover'
         />
         <BottomPlalerNavbar
           paused={paused}

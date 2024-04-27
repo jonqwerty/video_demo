@@ -2,12 +2,12 @@ import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import React, {FC} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {Colors, FontFamily, ScreenWidth} from '../common/style';
 import LockIcon from '../icons/LockIcon';
 import {RootStackParamList, Screen} from '../common/enums';
 import {IMovieItem} from '../types/types';
+import {useAppStore} from '../store/store';
 
 interface IMovieCardSmallListItemProps {
   item: IMovieItem;
@@ -15,19 +15,12 @@ interface IMovieCardSmallListItemProps {
 
 const MovieCardSmallListItem: FC<IMovieCardSmallListItemProps> = ({item}) => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const setContinueWatching = useAppStore(state => state.setContinueWatching);
 
   const handlePress = async () => {
     if (item.coming === null) {
       navigation.navigate(Screen.Movie, {item: item});
-      const ids = await AsyncStorage.getItem('key');
-      if (ids) {
-        const arr = JSON.parse(ids);
-        const newArr = [...arr, item.id];
-        const unique = [...new Set(newArr)];
-        await AsyncStorage.setItem('key', JSON.stringify(unique));
-      } else {
-        await AsyncStorage.setItem('key', JSON.stringify([item.id]));
-      }
+      setContinueWatching(item);
     }
   };
 
