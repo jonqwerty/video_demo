@@ -1,5 +1,5 @@
 import {StyleSheet, View} from 'react-native';
-import React, {FC, useRef, useState} from 'react';
+import React, {FC, useEffect, useRef, useState} from 'react';
 import Video, {OnProgressData} from 'react-native-video';
 
 import TopPlayerNavbar from './TopPlayerNavbar';
@@ -11,15 +11,22 @@ export type VideoRefType = React.RefObject<Video>;
 
 interface IEpisodeItemProps {
   episode: IEpisodeItem;
+  currentEpisode: number;
 }
 
-const EpisodeItem: FC<IEpisodeItemProps> = ({episode}) => {
+const EpisodeItem: FC<IEpisodeItemProps> = ({episode, currentEpisode}) => {
   const [paused, setPaused] = useState(true);
   const [progress, setProgress] = useState<null | OnProgressData>(null);
   const [currentTime, setCurrentTime] = useState<number | null>(null);
   const [duration, setDuration] = useState<number | null>(null);
   const [loadong, setLoading] = useState<boolean>(false);
   const ref: VideoRefType = useRef<Video>(null);
+
+  useEffect(() => {
+    if (currentEpisode + 1 !== episode.id) {
+      setPaused(true);
+    }
+  }, [currentEpisode]);
 
   return (
     <View style={{flex: 1}}>
@@ -45,7 +52,7 @@ const EpisodeItem: FC<IEpisodeItemProps> = ({episode}) => {
           // onError={videoError} // Callback when video cannot be loaded
           muted={false}
           style={styles.backgroundVideo}
-          resizeMode='cover'
+          resizeMode="cover"
         />
         <BottomPlalerNavbar
           paused={paused}

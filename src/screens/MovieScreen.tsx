@@ -42,7 +42,7 @@ const MovieScreen: FC = () => {
         onMomentumScrollEnd={handleSwipe}>
         {route?.params?.item?.episodes?.map((episode, index) => (
           <View key={episode.id} style={{width: ScreenWidth}}>
-            <EpisodeItem episode={episode} />
+            <EpisodeItem episode={episode} currentEpisode={currentEpisode} />
           </View>
         ))}
       </ScrollView>
