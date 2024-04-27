@@ -5,8 +5,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 
 import {Colors, FontFamily, ScreenWidth} from '../common/style';
-import {IMovieItem} from '../store/app/appReducer';
 import {RootStackParamList, Screen} from '../common/enums';
+import { IMovieItem } from '../types/types';
 
 interface IMovieCardBigListItemProps {
   item: IMovieItem;

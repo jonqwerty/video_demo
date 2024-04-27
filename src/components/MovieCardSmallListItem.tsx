@@ -5,9 +5,9 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {Colors, FontFamily, ScreenWidth} from '../common/style';
-import {IMovieItem} from '../store/app/appReducer';
 import LockIcon from '../icons/LockIcon';
 import {RootStackParamList, Screen} from '../common/enums';
+import {IMovieItem} from '../types/types';
 
 interface IMovieCardSmallListItemProps {
   item: IMovieItem;

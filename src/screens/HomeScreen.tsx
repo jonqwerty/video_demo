@@ -9,10 +9,13 @@ import Header from '../components/Header';
 import ListOfSmallCards from '../components/ListOfSmallCards';
 import ListOfBigCards from '../components/ListOfBigCards';
 import ListOfContinueWatching from '../components/ListOfContinueWatching';
-import {IData} from '../store/app/appReducer';
+import {useAppStore} from '../store/store';
+import {IData} from '../types/types';
 
 const HomeScreen: FC = () => {
-  const [data, setData] = useState<IData | null>(null);
+  const data = useAppStore(state => state.data);
+  const setData = useAppStore(state => state.setData);
+
   useEffect(() => {
     // remoteConfig().fetch(300);
     remoteConfig()

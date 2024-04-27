@@ -1,12 +1,5 @@
 import {RouteProp} from '@react-navigation/native';
-import {IMovieItem} from '../store/app/appReducer';
-
-export enum LoadingStatus {
-  IDLE = 'idle',
-  LOADING = 'loading',
-  SUCCEEDED = 'succeeded',
-  FAILED = 'failed',
-}
+import {IMovieItem} from '../types/types';
 
 export enum Screen {
   Home = 'Home',

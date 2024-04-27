@@ -1,12 +1,11 @@
-import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import React, {FC, useRef, useState} from 'react';
 import Video, {OnProgressData} from 'react-native-video';
 
-import {IEpisodeItem} from '../store/app/appReducer';
 import TopPlayerNavbar from './TopPlayerNavbar';
 import BottomPlalerNavbar from './BottomPlalerNavbar';
-import {ScreenHeight, ScreenWidth} from '../common/style';
 import Loader from './Loader';
+import {IEpisodeItem} from '../types/types';
 
 export type VideoRefType = React.RefObject<Video>;
 

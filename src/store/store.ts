@@ -1,25 +1,25 @@
-import {combineReducers, configureStore} from '@reduxjs/toolkit';
-import {useDispatch} from 'react-redux';
+import {create} from 'zustand';
+import {createJSONStorage, devtools, persist} from 'zustand/middleware';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import appReducer from './app/appReducer';
+import {IData} from '../types/types';
 
-const rootReducer = combineReducers({
-  app: appReducer,
-});
+interface BearState {
+  data: IData | null;
+  setData: (by: IData) => void;
+}
 
-export type RootState = ReturnType<typeof rootReducer>;
-
-export const store = configureStore({
-  reducer: rootReducer,
-  middleware: getDefaultMiddleware =>
-    getDefaultMiddleware({
-      thunk: {
-        extraArgument: {},
+export const useAppStore = create<BearState>()(
+  devtools(
+    persist(
+      set => ({
+        data: null,
+        setData: data => set(state => ({data: data})),
+      }),
+      {
+        name: 'bear-storage',
+        storage: createJSONStorage(() => AsyncStorage),
       },
-      serializableCheck: false,
-    }).concat(),
-});
-
-export type AppDispatch = typeof store.dispatch;
-
-export const useAppDispatch = () => useDispatch<AppDispatch>();
+    ),
+  ),
+);

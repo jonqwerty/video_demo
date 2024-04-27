@@ -4,9 +4,9 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {useNavigation} from '@react-navigation/native';
 
 import {Colors, FontFamily, ScreenWidth} from '../common/style';
-import {IMovieItem} from '../store/app/appReducer';
 import {RootStackParamList, Screen} from '../common/enums';
 import ArrowRightIcon from '../icons/ArrowRightIcon';
+import {IMovieItem} from '../types/types';
 
 interface IMovieContinueWatchingListItemProps {
   item: IMovieItem;
