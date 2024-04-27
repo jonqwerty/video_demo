@@ -6,7 +6,7 @@ import {Colors, FontFamily} from '../common/style';
 import MovieContinueWatchingListItem from './MovieContinueWatchingListItem';
 
 interface IListOfContinueWatchingProps {
-  data: IMovieItem[];
+  data: IMovieItem[] | undefined;
   title: string;
 }
 const ListOfContinueWatching: FC<IListOfContinueWatchingProps> = ({
@@ -17,7 +17,7 @@ const ListOfContinueWatching: FC<IListOfContinueWatchingProps> = ({
     <View>
       <Text style={styles.text}>{title}</Text>
 
-      {data.map((item, index) => (
+      {data?.map((item, index) => (
         <MovieContinueWatchingListItem item={item} key={index} />
       ))}
     </View>

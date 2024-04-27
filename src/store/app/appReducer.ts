@@ -2,6 +2,11 @@ import {createReducer, isAnyOf, SerializedError} from '@reduxjs/toolkit';
 
 import {LoadingStatus} from '../../common/enums';
 
+export interface IData {
+  sectionOrder: string[];
+  movies: IMovieItem[];
+}
+
 export interface IEpisodeItem {
   id: number;
   title: string;

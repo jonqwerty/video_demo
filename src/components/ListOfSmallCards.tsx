@@ -6,7 +6,7 @@ import MovieCardSmallListItem from './MovieCardSmallListItem';
 import {IMovieItem} from '../store/app/appReducer';
 
 interface IListOfSmallCards {
-  data: IMovieItem[];
+  data: IMovieItem[] | undefined;
   title: string;
 }
 

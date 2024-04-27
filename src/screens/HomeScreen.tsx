@@ -1,18 +1,33 @@
 import {ScrollView, StatusBar, StyleSheet, View} from 'react-native';
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useFocusEffect} from '@react-navigation/native';
-
-import * as data from '../data/data.json';
+import remoteConfig from '@react-native-firebase/remote-config';
 
 import {Colors} from '../common/style';
 import Header from '../components/Header';
 import ListOfSmallCards from '../components/ListOfSmallCards';
 import ListOfBigCards from '../components/ListOfBigCards';
 import ListOfContinueWatching from '../components/ListOfContinueWatching';
+import {IData} from '../store/app/appReducer';
 
 const HomeScreen: FC = () => {
-  const order = data.sectionOrder;
+  const [data, setData] = useState<IData | null>(null);
+  useEffect(() => {
+    // remoteConfig().fetch(300);
+    remoteConfig()
+      .setDefaults({
+        data_movie: 'disabled',
+      })
+      .then(() => remoteConfig().fetchAndActivate())
+      .then(() => {
+        const res = remoteConfig().getValue('data_movie');
+        setData(JSON.parse(res?._value) as IData);
+      });
+  }, []);
+
+  const order = data?.sectionOrder;
+  console.log(order);
 
   const [watched, setWatched] = useState<number[] | null>(null);
 
@@ -37,13 +52,13 @@ const HomeScreen: FC = () => {
       <View style={styles.container}>
         <Header />
         <ScrollView>
-          {order.map((item, index) => {
+          {order?.map((item, index) => {
             switch (item) {
               case 'genre':
                 return (
                   <View key={index}>
                     <ListOfBigCards
-                      data={data.movies.filter(item => !item.coming)}
+                      data={data?.movies.filter(item => !item.coming)}
                     />
                   </View>
                 );
@@ -51,7 +66,7 @@ const HomeScreen: FC = () => {
                 return (
                   <View key={index}>
                     <ListOfSmallCards
-                      data={data.movies.filter(item => item.trendingNow)}
+                      data={data?.movies.filter(item => item.trendingNow)}
                       title={'Trending Now'}
                     />
                   </View>
@@ -60,7 +75,7 @@ const HomeScreen: FC = () => {
                 return (
                   <View key={index}>
                     <ListOfSmallCards
-                      data={data.movies.filter(item => item.top)}
+                      data={data?.movies.filter(item => item.top)}
                       title={'Top Romance'}
                     />
                   </View>
@@ -69,7 +84,9 @@ const HomeScreen: FC = () => {
                 return (
                   <View key={index}>
                     <ListOfContinueWatching
-                      data={data.movies.filter(({id}) => watched?.includes(id))}
+                      data={data?.movies.filter(({id}) =>
+                        watched?.includes(id),
+                      )}
                       title={'Continue Watching'}
                     />
                   </View>

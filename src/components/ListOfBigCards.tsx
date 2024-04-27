@@ -5,7 +5,7 @@ import MovieCardBigListItem from './MovieCardBigListItem';
 import {IMovieItem} from '../store/app/appReducer';
 
 interface IListOfBigCardsProps {
-  data: IMovieItem[];
+  data: IMovieItem[] | undefined;
 }
 const ListOfBigCards: FC<IListOfBigCardsProps> = ({data}) => {
   return (
