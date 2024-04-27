@@ -6,7 +6,6 @@ import {useNavigation} from '@react-navigation/native';
 import {Colors, FontFamily, ScreenWidth} from '../common/style';
 import {RootStackParamList, Screen} from '../common/enums';
 import {IMovieItem} from '../types/types';
-import {useAppStore} from '../store/store';
 
 interface IMovieCardBigListItemProps {
   item: IMovieItem;
@@ -14,11 +13,9 @@ interface IMovieCardBigListItemProps {
 
 const MovieCardBigListItem: FC<IMovieCardBigListItemProps> = ({item}) => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const setContinueWatching = useAppStore(state => state.setContinueWatching);
 
   const handlePress = async () => {
     navigation.navigate(Screen.Movie, {item: item});
-    setContinueWatching(item);
   };
 
   return (

@@ -7,7 +7,6 @@ import {Colors, FontFamily, ScreenWidth} from '../common/style';
 import LockIcon from '../icons/LockIcon';
 import {RootStackParamList, Screen} from '../common/enums';
 import {IMovieItem} from '../types/types';
-import {useAppStore} from '../store/store';
 
 interface IMovieCardSmallListItemProps {
   item: IMovieItem;
@@ -15,12 +14,10 @@ interface IMovieCardSmallListItemProps {
 
 const MovieCardSmallListItem: FC<IMovieCardSmallListItemProps> = ({item}) => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const setContinueWatching = useAppStore(state => state.setContinueWatching);
 
   const handlePress = async () => {
     if (item.coming === null) {
       navigation.navigate(Screen.Movie, {item: item});
-      setContinueWatching(item);
     }
   };
 

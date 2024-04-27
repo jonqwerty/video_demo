@@ -5,17 +5,26 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import React, {FC, useRef, useState} from 'react';
+import React, {FC, useEffect, useRef, useState} from 'react';
 import {useRoute} from '@react-navigation/native';
 
 import {RootRouteProps} from '../common/enums';
 import {Colors, ScreenWidth} from '../common/style';
 import EpisodeItem from '../components/EpisodeItem';
+import {useAppStore} from '../store/store';
 
 const MovieScreen: FC = () => {
   const route = useRoute<RootRouteProps<'Movie'>>();
+  const setContinueWatching = useAppStore(state => state.setContinueWatching);
   const [currentEpisode, setCurrentEpisode] = useState(0);
   const scrollViewRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      console.log('return from', route?.params?.item.id);
+      setContinueWatching(route?.params?.item);
+    };
+  }, []);
 
   const handleSwipe = (
     event: NativeSyntheticEvent<{contentOffset: {x: number; y: number}}>,
