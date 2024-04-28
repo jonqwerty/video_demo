@@ -77,3 +77,22 @@ To learn more about React Native, take a look at the following resources:
 - [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
 - [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
 - [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+
+# Attention, it's important !!!!!!!!!
+
+If you got this to error :
+
+error Failed to install the app. Make sure you have the Android development environment set up: https://reactnative.dev/docs/environment-setup.
+Error: Command failed: ./gradlew app:installDebug -PreactNativeDevServerPort=8081
+/Users/mohibwasay/Desktop/workspace/relevnt/relevnt-app/node_modules/react-native-video/android-exoplayer/src/main/java/com/brentvatne/exoplayer/ReactExoplayerView.java:330: error: cannot find symbol
+        ImageButton playButton = playerControlView.findViewById(R.id.exo_play);
+                                                                    ^
+  symbol:   variable exo_play
+  location: class id
+/Users/mohibwasay/Desktop/workspace/relevnt/relevnt-app/node_modules/react-native-video/android-exoplayer/src/main/java/com/brentvatne/exoplayer/ReactExoplayerView.java:342: error: cannot find symbol
+        ImageButton pauseButton = playerControlView.findViewById(R.id.exo_pause);
+
+
+[Here is fix](https://github.com/react-native-video/react-native-video/issues/2631#issuecomment-1957333142)
+
+You should do it in node_modules\react-native-video\android-exoplayer\src\main\java\com\brentvatne\exoplayer\ReactExoplayerView.java
