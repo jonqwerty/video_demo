@@ -5,22 +5,92 @@ import Video, {OnProgressData} from 'react-native-video';
 import TopPlayerNavbar from './TopPlayerNavbar';
 import BottomPlalerNavbar from './BottomPlalerNavbar';
 import Loader from './Loader';
-import {IEpisodeItem} from '../types/types';
+import {IEpisodeItem, IEpisodeTimeItem} from '../types/types';
 
 export type VideoRefType = React.RefObject<Video>;
 
 interface IEpisodeItemProps {
   episode: IEpisodeItem;
   currentEpisode: number;
+  episodesCurrentTime: IEpisodeTimeItem[] | [];
+  setEpisodesCurrentTime: React.Dispatch<
+    React.SetStateAction<IEpisodeTimeItem[] | []>
+  >;
+  episodeTime: IEpisodeTimeItem | undefined;
 }
 
-const EpisodeItem: FC<IEpisodeItemProps> = ({episode, currentEpisode}) => {
+const EpisodeItem: FC<IEpisodeItemProps> = ({
+  episode,
+  currentEpisode,
+  episodesCurrentTime,
+  setEpisodesCurrentTime,
+  episodeTime,
+}) => {
   const [paused, setPaused] = useState(true);
   const [progress, setProgress] = useState<null | OnProgressData>(null);
   const [currentTime, setCurrentTime] = useState<number | null>(null);
-  const [duration, setDuration] = useState<number | null>(null);
+  const [duration, setDuration] = useState<number | undefined | null>(null);
   const [loadong, setLoading] = useState<boolean>(false);
   const ref: VideoRefType = useRef<Video>(null);
+
+  const seekToTime = (timeInSeconds: number) => {
+    if (ref.current) {
+      ref.current.seek(timeInSeconds);
+    }
+  };
+
+  useEffect(() => {
+    if (episodeTime) {
+      seekToTime(episodeTime.progress);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (progress && paused) {
+      const existingObject = episodesCurrentTime.find(
+        obj => obj.episodeId === episode.id,
+      );
+
+      if (existingObject) {
+        const update = episodesCurrentTime.filter(
+          item => item.episodeId !== episode.id,
+        );
+
+        setEpisodesCurrentTime([
+          ...update,
+          {episodeId: episode.id, progress: progress?.currentTime},
+        ]);
+      } else {
+        setEpisodesCurrentTime([
+          ...episodesCurrentTime,
+          {episodeId: episode.id, progress: progress?.currentTime},
+        ]);
+      }
+      return () => {
+        if (progress.currentTime > 0) {
+          const existingObject = episodesCurrentTime.find(
+            obj => obj.episodeId === episode.id,
+          );
+
+          if (existingObject) {
+            const update = episodesCurrentTime.filter(
+              item => item.episodeId !== episode.id,
+            );
+
+            setEpisodesCurrentTime([
+              ...update,
+              {episodeId: episode.id, progress: progress?.currentTime},
+            ]);
+          } else {
+            setEpisodesCurrentTime([
+              ...episodesCurrentTime,
+              {episodeId: episode.id, progress: progress?.currentTime},
+            ]);
+          }
+        }
+      };
+    }
+  }, [paused, progress]);
 
   useEffect(() => {
     if (currentEpisode + 1 !== episode.id) {
@@ -45,14 +115,22 @@ const EpisodeItem: FC<IEpisodeItemProps> = ({episode, currentEpisode}) => {
           onLoadStart={() => setLoading(true)}
           onLoad={data => {
             setDuration(data?.duration);
-            setCurrentTime(data?.currentTime);
+            setCurrentTime(
+              episodeTime ? episodeTime.progress : data?.currentTime,
+            );
+            if (episodeTime?.progress) {
+              setProgress({
+                currentTime: episodeTime?.progress || 0,
+                seekableDuration: data.duration,
+                playableDuration: data.duration,
+              });
+            }
             setLoading(false);
           }}
-          // onBuffer={onBuffer} // Callback when remote video is buffering
-          // onError={videoError} // Callback when video cannot be loaded
           muted={false}
           style={styles.backgroundVideo}
           resizeMode="cover"
+          // onEnd={() => setPaused(true)}
         />
         <BottomPlalerNavbar
           paused={paused}

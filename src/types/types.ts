@@ -24,3 +24,13 @@ export interface IMovieItem {
   posterUrl: string;
   episodes: IEpisodeItem[];
 }
+
+export interface IEpisodeTimeItem {
+  episodeId: number;
+  progress: number;
+}
+
+export interface IContinueWatchingWithTime {
+  movieId: number;
+  episodes: IEpisodeTimeItem[];
+}

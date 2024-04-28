@@ -7,6 +7,7 @@ import {Colors, FontFamily, ScreenWidth} from '../common/style';
 import {RootStackParamList, Screen} from '../common/enums';
 import ArrowRightIcon from '../icons/ArrowRightIcon';
 import {IMovieItem} from '../types/types';
+import {useAppStore} from '../store/store';
 
 interface IMovieContinueWatchingListItemProps {
   item: IMovieItem;
@@ -16,8 +17,20 @@ const MovieContinueWatchingListItem: FC<
   IMovieContinueWatchingListItemProps
 > = ({item}) => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const continueWatchingWithTime = useAppStore(
+    state => state.continueWatchingWithTime,
+  );
 
-  const handlePress = () => {};
+  const episodesTime = continueWatchingWithTime.find(
+    obj => obj.movieId === item.id,
+  );
+
+  const handlePress = () => {
+    navigation.navigate(Screen.Movie, {
+      item: item,
+      episodesTime: episodesTime?.episodes,
+    });
+  };
 
   return (
     <Pressable style={styles.container} onPress={handlePress}>

@@ -12,19 +12,36 @@ import {RootRouteProps} from '../common/enums';
 import {Colors, ScreenWidth} from '../common/style';
 import EpisodeItem from '../components/EpisodeItem';
 import {useAppStore} from '../store/store';
+import {IEpisodeTimeItem} from '../types/types';
 
 const MovieScreen: FC = () => {
   const route = useRoute<RootRouteProps<'Movie'>>();
+
+  const episodesTime = route.params.episodesTime;
+
   const setContinueWatching = useAppStore(state => state.setContinueWatching);
+  const setContinueWatchingWithTime = useAppStore(
+    state => state.setContinueWatchingWithTime,
+  );
   const [currentEpisode, setCurrentEpisode] = useState(0);
+
+  const [episodesCurrentTime, setEpisodesCurrentTime] = useState<
+    IEpisodeTimeItem[] | []
+  >([]);
+
   const scrollViewRef = useRef(null);
 
   useEffect(() => {
     return () => {
-      console.log('return from', route?.params?.item.id);
       setContinueWatching(route?.params?.item);
+      if (episodesCurrentTime.length > 0) {
+        setContinueWatchingWithTime({
+          movieId: route?.params?.item.id,
+          episodes: episodesCurrentTime,
+        });
+      }
     };
-  }, []);
+  }, [episodesCurrentTime]);
 
   const handleSwipe = (
     event: NativeSyntheticEvent<{contentOffset: {x: number; y: number}}>,
@@ -51,7 +68,15 @@ const MovieScreen: FC = () => {
         onMomentumScrollEnd={handleSwipe}>
         {route?.params?.item?.episodes?.map((episode, index) => (
           <View key={episode.id} style={{width: ScreenWidth}}>
-            <EpisodeItem episode={episode} currentEpisode={currentEpisode} />
+            <EpisodeItem
+              episode={episode}
+              currentEpisode={currentEpisode}
+              episodesCurrentTime={episodesCurrentTime}
+              setEpisodesCurrentTime={setEpisodesCurrentTime}
+              episodeTime={episodesTime?.find(
+                obj => obj.episodeId === episode.id,
+              )}
+            />
           </View>
         ))}
       </ScrollView>

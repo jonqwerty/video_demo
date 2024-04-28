@@ -14,7 +14,7 @@ interface IBottomPlalerNavbarProps {
   setPaused: (arg0: boolean) => void;
   progress: null | OnProgressData;
   currentTime: null | number;
-  duration: null | number;
+  duration: null | number | undefined;
 }
 
 interface IPlayerRef {

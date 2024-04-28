@@ -10,11 +10,21 @@ import {useAppStore} from '../store/store';
 
 const HomeScreen: FC = () => {
   const data = useAppStore(state => state.data);
-  const continueWatching = useAppStore(state => state.continueWatching);
-  console.log(continueWatching);
+
+  const continueWatchingWithTime = useAppStore(
+    state => state.continueWatchingWithTime,
+  );
+
+  const continueWatchingWithTimeIds = continueWatchingWithTime.map(
+    item => item.movieId,
+  );
+
+  console.log(
+    'continueWatchingWithTime ->',
+    JSON.stringify(continueWatchingWithTime),
+  );
 
   const order = data?.sectionOrder;
-  console.log(order);
 
   return (
     <>
@@ -59,7 +69,7 @@ const HomeScreen: FC = () => {
                   <View key={index}>
                     <ListOfContinueWatching
                       data={data?.movies.filter(({id}) =>
-                        continueWatching?.includes(id),
+                        continueWatchingWithTimeIds?.includes(id),
                       )}
                       title={'Continue Watching'}
                     />

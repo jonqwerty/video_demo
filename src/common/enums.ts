@@ -1,5 +1,5 @@
 import {RouteProp} from '@react-navigation/native';
-import {IMovieItem} from '../types/types';
+import {IEpisodeTimeItem, IMovieItem} from '../types/types';
 
 export enum Screen {
   Home = 'Home',
@@ -8,7 +8,7 @@ export enum Screen {
 
 export type RootStackParamList = {
   Home: {};
-  Movie: {item: IMovieItem};
+  Movie: {item: IMovieItem; episodesTime?: IEpisodeTimeItem[]};
 };
 
 export type RootRouteProps<RouteName extends keyof RootStackParamList> =
