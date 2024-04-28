@@ -38,12 +38,16 @@ export const useAppStore = create<IState>()(
         setContinueWatchingWithTime: (item: IContinueWatchingWithTime) =>
           set(
             produce((state: IState) => {
+              if (item.episodes.length === 0) {
+                return;
+              }
+
               const existingObject = state.continueWatchingWithTime.find(
-                item => item.movieId === item.movieId,
+                obj => obj.movieId === item.movieId,
               );
               if (existingObject) {
                 const update = state.continueWatchingWithTime.filter(
-                  item => item.movieId !== item.movieId,
+                  obj => obj.movieId !== item.movieId,
                 );
                 state.continueWatchingWithTime = [...update, item];
               } else {

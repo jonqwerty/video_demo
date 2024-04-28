@@ -66,14 +66,16 @@ const HomeScreen: FC = () => {
                 );
               case 'continueWatching':
                 return (
-                  <View key={index}>
-                    <ListOfContinueWatching
-                      data={data?.movies.filter(({id}) =>
-                        continueWatchingWithTimeIds?.includes(id),
-                      )}
-                      title={'Continue Watching'}
-                    />
-                  </View>
+                  continueWatchingWithTimeIds.length > 0 && (
+                    <View key={index}>
+                      <ListOfContinueWatching
+                        data={data?.movies.filter(({id}) =>
+                          continueWatchingWithTimeIds?.includes(id),
+                        )}
+                        title={'Continue Watching'}
+                      />
+                    </View>
+                  )
                 );
               default:
                 return null;

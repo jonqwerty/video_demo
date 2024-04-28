@@ -34,12 +34,11 @@ const MovieScreen: FC = () => {
   useEffect(() => {
     return () => {
       setContinueWatching(route?.params?.item);
-      if (episodesCurrentTime.length > 0) {
-        setContinueWatchingWithTime({
-          movieId: route?.params?.item.id,
-          episodes: episodesCurrentTime,
-        });
-      }
+
+      setContinueWatchingWithTime({
+        movieId: route?.params?.item.id,
+        episodes: episodesCurrentTime,
+      });
     };
   }, [episodesCurrentTime]);
 
