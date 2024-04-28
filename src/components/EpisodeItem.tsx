@@ -1,4 +1,4 @@
-import {StyleSheet, View} from 'react-native';
+import {BackHandler, StyleSheet, View} from 'react-native';
 import React, {FC, useEffect, useRef, useState} from 'react';
 import Video, {OnProgressData} from 'react-native-video';
 
@@ -6,6 +6,9 @@ import TopPlayerNavbar from './TopPlayerNavbar';
 import BottomPlalerNavbar from './BottomPlalerNavbar';
 import Loader from './Loader';
 import {IEpisodeItem, IEpisodeTimeItem} from '../types/types';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from '../common/enums';
 
 export type VideoRefType = React.RefObject<Video>;
 
@@ -26,6 +29,8 @@ const EpisodeItem: FC<IEpisodeItemProps> = ({
   setEpisodesCurrentTime,
   episodeTime,
 }) => {
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+
   const [paused, setPaused] = useState(true);
   const [progress, setProgress] = useState<null | OnProgressData>(null);
   const [currentTime, setCurrentTime] = useState<number | null>(null);
@@ -66,29 +71,29 @@ const EpisodeItem: FC<IEpisodeItemProps> = ({
           {episodeId: episode.id, progress: progress?.currentTime},
         ]);
       }
-      return () => {
-        if (progress.currentTime > 0) {
-          const existingObject = episodesCurrentTime.find(
-            obj => obj.episodeId === episode.id,
-          );
+      // return () => {
+      //   if (progress.currentTime > 0) {
+      //     const existingObject = episodesCurrentTime.find(
+      //       obj => obj.episodeId === episode.id,
+      //     );
 
-          if (existingObject) {
-            const update = episodesCurrentTime.filter(
-              item => item.episodeId !== episode.id,
-            );
+      //     if (existingObject) {
+      //       const update = episodesCurrentTime.filter(
+      //         item => item.episodeId !== episode.id,
+      //       );
 
-            setEpisodesCurrentTime([
-              ...update,
-              {episodeId: episode.id, progress: progress?.currentTime},
-            ]);
-          } else {
-            setEpisodesCurrentTime([
-              ...episodesCurrentTime,
-              {episodeId: episode.id, progress: progress?.currentTime},
-            ]);
-          }
-        }
-      };
+      //       setEpisodesCurrentTime([
+      //         ...update,
+      //         {episodeId: episode.id, progress: progress?.currentTime},
+      //       ]);
+      //     } else {
+      //       setEpisodesCurrentTime([
+      //         ...episodesCurrentTime,
+      //         {episodeId: episode.id, progress: progress?.currentTime},
+      //       ]);
+      //     }
+      //   }
+      // };
     }
   }, [paused, progress]);
 
@@ -97,6 +102,43 @@ const EpisodeItem: FC<IEpisodeItemProps> = ({
       setPaused(true);
     }
   }, [currentEpisode]);
+
+  const backAction = () => {
+    if (progress) {
+      const existingObject = episodesCurrentTime.find(
+        obj => obj.episodeId === episode.id,
+      );
+
+      if (existingObject) {
+        const update = episodesCurrentTime.filter(
+          item => item.episodeId !== episode.id,
+        );
+
+        setEpisodesCurrentTime([
+          ...update,
+          {episodeId: episode.id, progress: progress?.currentTime},
+        ]);
+      } else {
+        setEpisodesCurrentTime([
+          ...episodesCurrentTime,
+          {episodeId: episode.id, progress: progress?.currentTime},
+        ]);
+      }
+      navigation.goBack();
+    } else {
+      navigation.goBack();
+    }
+    return true;
+  };
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, [progress]);
 
   return (
     <View style={{flex: 1}}>
