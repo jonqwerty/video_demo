@@ -1,10 +1,11 @@
 import React, {FC, useEffect} from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import { SafeAreaView, StyleSheet} from 'react-native';
 import remoteConfig from '@react-native-firebase/remote-config';
 
 import AppNavigator from './src/navigation/AppNavigator';
 import {useAppStore} from './src/store/store';
 import {IData} from './src/types/types';
+import { Colors } from './src/common/style';
 
 const App: FC = () => {
   const setData = useAppStore(state => state.setData);
@@ -32,6 +33,7 @@ const App: FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor:Colors.black,
   },
 });
 
