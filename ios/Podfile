@@ -7,15 +7,29 @@ require Pod::Executable.execute_command('node', ['-p',
 
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
+ 
 
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
   Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
-  use_frameworks! :linkage => linkage.to_sym
+  # use_frameworks! :linkage => linkage.to_sym
+  use_frameworks! :linkage => :static
+  $RNFirebaseAsStaticFramework = true
+  
+  
 end
 
 target 'video_demo' do
   config = use_native_modules!
+
+
+  pod 'FirebaseCoreInternal', :modular_headers => true
+  pod 'GoogleUtilities', :modular_headers => true
+  pod 'FirebaseRemoteConfig', :modular_headers => true
+  pod 'FirebaseABTesting', :modular_headers => true
+  pod 'FirebaseCore', :modular_headers => true
+  pod 'FirebaseInstallations', :modular_headers => true
+  # pod 'GoogleUtilities-7cacef58', :modular_headers => true 
 
   use_react_native!(
     :path => config[:reactNativePath],
@@ -26,6 +40,9 @@ target 'video_demo' do
   target 'video_demoTests' do
     inherit! :complete
     # Pods for testing
+   
+  
+  
   end
 
   post_install do |installer|
