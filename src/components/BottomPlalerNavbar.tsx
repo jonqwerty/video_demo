@@ -1,4 +1,4 @@
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Platform, Pressable, StyleSheet, Text, View} from 'react-native';
 import React, {forwardRef} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import Slider from '@react-native-community/slider';
@@ -43,7 +43,7 @@ const BottomPlalerNavbar = forwardRef<IPlayerRef, IBottomPlalerNavbarProps>(
             }}>
             {paused ? <PlayIcon /> : <PauseIcon />}
           </Pressable>
-          <View style={{flex: 1, marginLeft: 20}}>
+          <View style={{flex: 1, marginLeft: 20, marginTop: Platform.OS === 'ios' ? -10 : 0}}>
             <Slider
               minimumValue={0}
               maximumValue={progress?.seekableDuration}
@@ -59,10 +59,10 @@ const BottomPlalerNavbar = forwardRef<IPlayerRef, IBottomPlalerNavbarProps>(
               style={{
                 width: '100%',
                 position: 'absolute',
-                top: 20,
+                top: Platform.OS === 'ios' ? 35 : 20,
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                paddingHorizontal: 15,
+                paddingHorizontal: Platform.OS === 'ios' ? 0 : 15,
               }}>
               <Text style={styles.textTime}>
                 {progress === null
