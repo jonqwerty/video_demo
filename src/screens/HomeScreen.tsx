@@ -1,4 +1,4 @@
-import {ScrollView, StatusBar, StyleSheet, View} from 'react-native';
+import {Platform, ScrollView, StatusBar, StyleSheet, View} from 'react-native';
 import React, {FC} from 'react';
 
 import {Colors} from '../common/style';
@@ -31,7 +31,7 @@ const HomeScreen: FC = () => {
       <StatusBar
         animated={true}
         backgroundColor={Colors.black_basic}
-        barStyle={'default'}
+        barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
       />
       <View style={styles.container}>
         <Header />

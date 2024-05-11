@@ -43,7 +43,12 @@ const BottomPlalerNavbar = forwardRef<IPlayerRef, IBottomPlalerNavbarProps>(
             }}>
             {paused ? <PlayIcon /> : <PauseIcon />}
           </Pressable>
-          <View style={{flex: 1, marginLeft: 20, marginTop: Platform.OS === 'ios' ? -10 : 0}}>
+          <View
+            style={{
+              flex: 1,
+              marginLeft: 20,
+              marginTop: Platform.OS === 'ios' ? -10 : 0,
+            }}>
             <Slider
               minimumValue={0}
               maximumValue={progress?.seekableDuration}

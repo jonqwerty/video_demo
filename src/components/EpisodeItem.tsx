@@ -169,7 +169,7 @@ const EpisodeItem: FC<IEpisodeItemProps> = ({
             }
             setLoading(false);
           }}
-          muted={false}
+          muted={true}
           style={styles.backgroundVideo}
           resizeMode="cover"
           // onEnd={() => setPaused(true)}

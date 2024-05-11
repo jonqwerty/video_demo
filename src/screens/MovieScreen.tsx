@@ -1,5 +1,6 @@
 import {
   NativeSyntheticEvent,
+  Platform,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -9,7 +10,7 @@ import React, {FC, useEffect, useRef, useState} from 'react';
 import {useRoute} from '@react-navigation/native';
 
 import {RootRouteProps} from '../common/enums';
-import {Colors, ScreenWidth} from '../common/style';
+import {Colors, ScreenHeight, ScreenWidth, WindowHeight} from '../common/style';
 import EpisodeItem from '../components/EpisodeItem';
 import {useAppStore} from '../store/store';
 import {IEpisodeTimeItem} from '../types/types';
@@ -42,11 +43,21 @@ const MovieScreen: FC = () => {
     };
   }, [episodesCurrentTime]);
 
+  // const handleSwipe = (
+  //   event: NativeSyntheticEvent<{contentOffset: {x: number; y: number}}>,
+  // ) => {
+  //   const offsetX = event.nativeEvent.contentOffset.x;
+  //   const newIndex = Math.round(offsetX / ScreenWidth);
+  //   if (newIndex !== currentEpisode) {
+  //     setCurrentEpisode(newIndex);
+  //   }
+  // };
+
   const handleSwipe = (
     event: NativeSyntheticEvent<{contentOffset: {x: number; y: number}}>,
   ) => {
-    const offsetX = event.nativeEvent.contentOffset.x;
-    const newIndex = Math.round(offsetX / ScreenWidth);
+    const offsetY = event.nativeEvent.contentOffset.y;
+    const newIndex = Math.round(offsetY / ScreenHeight);
     if (newIndex !== currentEpisode) {
       setCurrentEpisode(newIndex);
     }
@@ -57,16 +68,21 @@ const MovieScreen: FC = () => {
       <StatusBar
         animated={true}
         backgroundColor={Colors.black_basic}
-        barStyle={'default'}
+        barStyle={Platform.OS === 'ios' ? 'light-content' : 'default'}
       />
       <ScrollView
         ref={scrollViewRef}
-        horizontal
+        horizontal={false}
         pagingEnabled
         showsHorizontalScrollIndicator={false}
         onMomentumScrollEnd={handleSwipe}>
         {route?.params?.item?.episodes?.map((episode, index) => (
-          <View key={episode.id} style={{width: ScreenWidth}}>
+          <View
+            key={episode.id}
+            style={{
+              height:
+                Platform.OS === 'ios' ? ScreenHeight - 95 : WindowHeight - 25,
+            }}>
             <EpisodeItem
               episode={episode}
               currentEpisode={currentEpisode}
