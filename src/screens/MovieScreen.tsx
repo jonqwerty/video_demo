@@ -1,5 +1,4 @@
 import {
-  Animated,
   NativeSyntheticEvent,
   Platform,
   ScrollView,
@@ -8,34 +7,17 @@ import {
   View,
 } from 'react-native';
 import React, {FC, useEffect, useRef, useState} from 'react';
-import {useNavigation, useRoute} from '@react-navigation/native';
-import SwipeGesture from 'react-native-swipe-gestures';
-import {StackNavigationProp} from '@react-navigation/stack';
+import {useRoute} from '@react-navigation/native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
-import {RootRouteProps, RootStackParamList, Screen} from '../common/enums';
+import {RootRouteProps} from '../common/enums';
 import {Colors, ScreenHeight, WindowHeight} from '../common/style';
 import EpisodeItem from '../components/EpisodeItem';
 import {useAppStore} from '../store/store';
 import {IEpisodeTimeItem} from '../types/types';
 
-interface GestureState {
-  _accountsForMovesUpTo: number;
-  dx: number;
-  dy: number;
-  moveX: number;
-  moveY: number;
-  numberActiveTouches: number;
-  stateID: number;
-  vx: number;
-  vy: number;
-  x0: number;
-  y0: number;
-}
-
 const MovieScreen: FC = () => {
   const route = useRoute<RootRouteProps<'Movie'>>();
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   const insets = useSafeAreaInsets();
 
@@ -76,18 +58,6 @@ const MovieScreen: FC = () => {
     }
   };
 
-  const screenTranslateX = new Animated.Value(0);
-
-  const onSwipeRight = (gestureState: GestureState) => {
-    if (gestureState.dx > 100) {
-      Animated.timing(screenTranslateX, {
-        toValue: 200,
-        duration: 300,
-        useNativeDriver: true,
-      }).start(() => navigation.navigate(Screen.Home, {}));
-    }
-  };
-
   return (
     <>
       <StatusBar
@@ -101,39 +71,26 @@ const MovieScreen: FC = () => {
         pagingEnabled
         showsHorizontalScrollIndicator={false}
         onMomentumScrollEnd={handleSwipe}>
-        <SwipeGesture
-          onSwipeRight={onSwipeRight}
-          config={{
-            velocityThreshold: 0.3,
-            directionalOffsetThreshold: 80,
-          }}
-          style={{flex: 1}}>
-          <Animated.View
+        {route?.params?.item?.episodes?.map((episode, index) => (
+          <View
+            key={episode.id}
             style={{
-              transform: [{translateX: screenTranslateX}],
+              height:
+                Platform.OS === 'ios'
+                  ? ScreenHeight - (insets.top + insets.bottom)
+                  : WindowHeight - statusBarHeight,
             }}>
-            {route?.params?.item?.episodes?.map((episode, index) => (
-              <View
-                key={episode.id}
-                style={{
-                  height:
-                    Platform.OS === 'ios'
-                      ? ScreenHeight - (insets.top + insets.bottom)
-                      : WindowHeight - statusBarHeight,
-                }}>
-                <EpisodeItem
-                  episode={episode}
-                  currentEpisode={currentEpisode}
-                  episodesCurrentTime={episodesCurrentTime}
-                  setEpisodesCurrentTime={setEpisodesCurrentTime}
-                  episodeTime={episodesTime?.find(
-                    obj => obj.episodeId === episode.id,
-                  )}
-                />
-              </View>
-            ))}
-          </Animated.View>
-        </SwipeGesture>
+            <EpisodeItem
+              episode={episode}
+              currentEpisode={currentEpisode}
+              episodesCurrentTime={episodesCurrentTime}
+              setEpisodesCurrentTime={setEpisodesCurrentTime}
+              episodeTime={episodesTime?.find(
+                obj => obj.episodeId === episode.id,
+              )}
+            />
+          </View>
+        ))}
       </ScrollView>
     </>
   );
