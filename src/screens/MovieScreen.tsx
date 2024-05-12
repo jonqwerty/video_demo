@@ -38,7 +38,9 @@ const MovieScreen: FC = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   const insets = useSafeAreaInsets();
-  console.log('>>>>>>>>>>>>', insets);
+
+  const statusBarHeight = StatusBar.currentHeight || 0;
+
   const episodesTime = route.params.episodesTime;
 
   const setContinueWatching = useAppStore(state => state.setContinueWatching);
@@ -117,7 +119,7 @@ const MovieScreen: FC = () => {
                   height:
                     Platform.OS === 'ios'
                       ? ScreenHeight - (insets.top + insets.bottom)
-                      : WindowHeight - 0,
+                      : WindowHeight - statusBarHeight,
                 }}>
                 <EpisodeItem
                   episode={episode}

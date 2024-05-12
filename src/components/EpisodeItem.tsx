@@ -1,12 +1,12 @@
 import {BackHandler, StyleSheet, View} from 'react-native';
 import React, {FC, useEffect, useRef, useState} from 'react';
 import Video, {OnProgressData} from 'react-native-video';
+import {useNavigation} from '@react-navigation/native';
 
 import TopPlayerNavbar from './TopPlayerNavbar';
 import BottomPlalerNavbar from './BottomPlalerNavbar';
 import Loader from './Loader';
 import {IEpisodeItem, IEpisodeTimeItem} from '../types/types';
-import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../common/enums';
 
