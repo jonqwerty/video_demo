@@ -1,4 +1,5 @@
 import {
+  Animated,
   NativeSyntheticEvent,
   Platform,
   ScrollView,
@@ -7,16 +8,33 @@ import {
   View,
 } from 'react-native';
 import React, {FC, useEffect, useRef, useState} from 'react';
-import {useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import SwipeGesture from 'react-native-swipe-gestures';
+import {StackNavigationProp} from '@react-navigation/stack';
 
-import {RootRouteProps} from '../common/enums';
+import {RootRouteProps, RootStackParamList, Screen} from '../common/enums';
 import {Colors, ScreenHeight, ScreenWidth, WindowHeight} from '../common/style';
 import EpisodeItem from '../components/EpisodeItem';
 import {useAppStore} from '../store/store';
 import {IEpisodeTimeItem} from '../types/types';
 
+interface GestureState {
+  _accountsForMovesUpTo: number;
+  dx: number;
+  dy: number;
+  moveX: number;
+  moveY: number;
+  numberActiveTouches: number;
+  stateID: number;
+  vx: number;
+  vy: number;
+  x0: number;
+  y0: number;
+}
+
 const MovieScreen: FC = () => {
   const route = useRoute<RootRouteProps<'Movie'>>();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   const episodesTime = route.params.episodesTime;
 
@@ -43,16 +61,6 @@ const MovieScreen: FC = () => {
     };
   }, [episodesCurrentTime]);
 
-  // const handleSwipe = (
-  //   event: NativeSyntheticEvent<{contentOffset: {x: number; y: number}}>,
-  // ) => {
-  //   const offsetX = event.nativeEvent.contentOffset.x;
-  //   const newIndex = Math.round(offsetX / ScreenWidth);
-  //   if (newIndex !== currentEpisode) {
-  //     setCurrentEpisode(newIndex);
-  //   }
-  // };
-
   const handleSwipe = (
     event: NativeSyntheticEvent<{contentOffset: {x: number; y: number}}>,
   ) => {
@@ -60,6 +68,18 @@ const MovieScreen: FC = () => {
     const newIndex = Math.round(offsetY / ScreenHeight);
     if (newIndex !== currentEpisode) {
       setCurrentEpisode(newIndex);
+    }
+  };
+
+  const screenTranslateX = new Animated.Value(0);
+
+  const onSwipeRight = (gestureState: GestureState) => {
+    if (gestureState.dx > 100) {
+      Animated.timing(screenTranslateX, {
+        toValue: 200,
+        duration: 300,
+        useNativeDriver: true,
+      }).start(() => navigation.navigate(Screen.Home, {}));
     }
   };
 
@@ -76,24 +96,39 @@ const MovieScreen: FC = () => {
         pagingEnabled
         showsHorizontalScrollIndicator={false}
         onMomentumScrollEnd={handleSwipe}>
-        {route?.params?.item?.episodes?.map((episode, index) => (
-          <View
-            key={episode.id}
+        <SwipeGesture
+          onSwipeRight={onSwipeRight}
+          config={{
+            velocityThreshold: 0.3,
+            directionalOffsetThreshold: 80,
+          }}
+          style={{flex: 1}}>
+          <Animated.View
             style={{
-              height:
-                Platform.OS === 'ios' ? ScreenHeight - 95 : WindowHeight - 25,
+              transform: [{translateX: screenTranslateX}],
             }}>
-            <EpisodeItem
-              episode={episode}
-              currentEpisode={currentEpisode}
-              episodesCurrentTime={episodesCurrentTime}
-              setEpisodesCurrentTime={setEpisodesCurrentTime}
-              episodeTime={episodesTime?.find(
-                obj => obj.episodeId === episode.id,
-              )}
-            />
-          </View>
-        ))}
+            {route?.params?.item?.episodes?.map((episode, index) => (
+              <View
+                key={episode.id}
+                style={{
+                  height:
+                    Platform.OS === 'ios'
+                      ? ScreenHeight - 95
+                      : WindowHeight - 25,
+                }}>
+                <EpisodeItem
+                  episode={episode}
+                  currentEpisode={currentEpisode}
+                  episodesCurrentTime={episodesCurrentTime}
+                  setEpisodesCurrentTime={setEpisodesCurrentTime}
+                  episodeTime={episodesTime?.find(
+                    obj => obj.episodeId === episode.id,
+                  )}
+                />
+              </View>
+            ))}
+          </Animated.View>
+        </SwipeGesture>
       </ScrollView>
     </>
   );
