@@ -11,9 +11,10 @@ import React, {FC, useEffect, useRef, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import SwipeGesture from 'react-native-swipe-gestures';
 import {StackNavigationProp} from '@react-navigation/stack';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import {RootRouteProps, RootStackParamList, Screen} from '../common/enums';
-import {Colors, ScreenHeight, ScreenWidth, WindowHeight} from '../common/style';
+import {Colors, ScreenHeight, WindowHeight} from '../common/style';
 import EpisodeItem from '../components/EpisodeItem';
 import {useAppStore} from '../store/store';
 import {IEpisodeTimeItem} from '../types/types';
@@ -36,6 +37,8 @@ const MovieScreen: FC = () => {
   const route = useRoute<RootRouteProps<'Movie'>>();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
+  const insets = useSafeAreaInsets();
+  console.log('>>>>>>>>>>>>', insets);
   const episodesTime = route.params.episodesTime;
 
   const setContinueWatching = useAppStore(state => state.setContinueWatching);
@@ -113,8 +116,8 @@ const MovieScreen: FC = () => {
                 style={{
                   height:
                     Platform.OS === 'ios'
-                      ? ScreenHeight - 95
-                      : WindowHeight - 25,
+                      ? ScreenHeight - (insets.top + insets.bottom)
+                      : WindowHeight - 0,
                 }}>
                 <EpisodeItem
                   episode={episode}
