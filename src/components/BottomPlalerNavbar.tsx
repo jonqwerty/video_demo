@@ -24,6 +24,7 @@ interface IPlayerRef {
 const BottomPlalerNavbar = forwardRef<IPlayerRef, IBottomPlalerNavbarProps>(
   (props, ref) => {
     const {paused, setPaused, progress, currentTime, duration} = props;
+
     return (
       <LinearGradient
         colors={['transparent', Colors.black_basic]}
@@ -70,7 +71,7 @@ const BottomPlalerNavbar = forwardRef<IPlayerRef, IBottomPlalerNavbarProps>(
                 paddingHorizontal: Platform.OS === 'ios' ? 0 : 15,
               }}>
               <Text style={styles.textTime}>
-                {progress === null
+                {progress === null || progress?.currentTime < 0.00001
                   ? formatTime(currentTime)
                   : formatTime(progress?.currentTime)}
               </Text>
