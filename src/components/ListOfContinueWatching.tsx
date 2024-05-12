@@ -1,10 +1,9 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React, {FC} from 'react';
 
-
 import {Colors, FontFamily} from '../common/style';
 import MovieContinueWatchingListItem from './MovieContinueWatchingListItem';
-import { IMovieItem } from '../types/types';
+import {IMovieItem} from '../types/types';
 
 interface IListOfContinueWatchingProps {
   data: IMovieItem[] | undefined;

@@ -2,7 +2,7 @@ import {FlatList, StyleSheet} from 'react-native';
 import React, {FC} from 'react';
 
 import MovieCardBigListItem from './MovieCardBigListItem';
-import { IMovieItem } from '../types/types';
+import {IMovieItem} from '../types/types';
 
 interface IListOfBigCardsProps {
   data: IMovieItem[] | undefined;

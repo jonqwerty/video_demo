@@ -3,8 +3,7 @@ import React, {FC} from 'react';
 
 import {Colors, FontFamily} from '../common/style';
 import MovieCardSmallListItem from './MovieCardSmallListItem';
-import { IMovieItem } from '../types/types';
-
+import {IMovieItem} from '../types/types';
 
 interface IListOfSmallCards {
   data: IMovieItem[] | undefined;
